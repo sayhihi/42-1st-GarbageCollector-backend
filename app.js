@@ -3,23 +3,16 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const typeorm = require("typeorm");
+
+const { appDataSource } = require("./models/appDataSource");
+const routes = require("./routes");
 
 const app = express();
 
-const { DataSource } = require("typeorm");
-const appDataSource = new DataSource({
-  type: process.env.DB_CONNECTION,
-  host: process.env.DB_HOST,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  database: process.env.DB_DATABASE,
-});
-
 app.use(cors());
-app.use(morgan("combined"));
+app.use(morgan("dev"));
 app.use(express.json());
+app.use(routes);
 
 app.get("/ping", (req, res) => {
   res.json({ message: "pong" });
