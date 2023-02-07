@@ -23,9 +23,9 @@ const PORT = process.env.PORT;
 const start = async () => {
   try {
     app.listen(PORT, () => console.log(`server is listening to ${PORT}`));
-    appDataSource.initialize().then(() => {
-      console.log("✅✅✅Data Source has been initialized!✅✅✅");
-    });
+
+    await appDataSource.initialize();
+    console.log("✅✅✅Data Source has been initialized!✅✅✅");
   } catch (err) {
     console.error("❌❌❌Failed Initialzed❌❌❌");
     throw err;
