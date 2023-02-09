@@ -14,7 +14,7 @@ const signup = async (req, res) => {
       phoneNumber,
       address
     );
-    return res.status(200).json({ message: "SUCCESS_SIGNUP" });
+    return res.status(201).json({ message: "SUCCESS_SIGNUP" });
   } catch (err) {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });

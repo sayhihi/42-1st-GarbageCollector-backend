@@ -1,5 +1,5 @@
 const { appDataSource } = require("./appDataSource");
-//유저 생성
+
 const createUser = async (
   email,
   password,
@@ -29,20 +29,20 @@ const createUser = async (
   }
 };
 
-//유저 이메일 중복 확인
-const getIdByUserEmail = async (email) => {
+const checkRegisterdEmail = async (email) => {
   try {
-    const [userId] = await appDataSource.query(
-      `SELECT
-        id
-      FROM
-        users
-      WHERE
-        email=?
-      `,
+    const [result] = await appDataSource.query(
+      `SELECT EXISTS(
+          SELECT
+          id
+        FROM
+          users
+        WHERE
+          email=?
+      ) as registed`,
       [email]
     );
-    if (userId) return userId.id;
+    return !!parseInt(result.registed);
   } catch (err) {
     console.error(err);
     err.statusCode = 500;
@@ -50,20 +50,20 @@ const getIdByUserEmail = async (email) => {
   }
 };
 
-//유저 폰번호 중복 확인
-const getIdByUserPhoneNumber = async (phoneNumber) => {
+const checkRegisterdPhoneNumber = async (phoneNumber) => {
   try {
-    const [userId] = await appDataSource.query(
-      `SELECT
-        id
-      FROM
-        users
-      WHERE
-        phone_number=?
-      `,
+    const [result] = await appDataSource.query(
+      `SELECT EXISTS(
+        SELECT
+          id
+        FROM
+          users
+        WHERE
+          phone_number=?
+      ) as registed`,
       [phoneNumber]
     );
-    if (userId) return userId.id;
+    return !!parseInt(result.registed);
   } catch (err) {
     console.error(err);
     err.statusCode = 500;
@@ -72,6 +72,6 @@ const getIdByUserPhoneNumber = async (phoneNumber) => {
 };
 module.exports = {
   createUser,
-  getIdByUserEmail,
-  getIdByUserPhoneNumber,
+  checkRegisterdEmail,
+  checkRegisterdPhoneNumber,
 };
