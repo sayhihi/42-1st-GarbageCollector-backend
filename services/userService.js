@@ -17,14 +17,11 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
     await checkValidation.checkValidationEmail(email);
     await checkValidation.checkValidationPassword(password);
     await checkValidation.checkValidationBirth(birth);
+    await checkValidation.checkValidationPhoneNumber(phoneNumber);
 
-    const costFactor = 12;
-    const makeHash = async (password, costFactor) => {
-      return await bycrpt.hash(password, costFactor);
-    };
-    const hashedPassword = await makeHash(password, costFactor);
+    const hashedPassword = await bycrpt.hash(password, 12);
 
-    const createUser = await userDao.createUser(
+    return userDao.createUser(
       email,
       hashedPassword,
       name,
@@ -32,7 +29,6 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
       phoneNumber,
       address
     );
-    return createUser;
   } catch (err) {
     console.error(err);
     err.statusCode = 500;
