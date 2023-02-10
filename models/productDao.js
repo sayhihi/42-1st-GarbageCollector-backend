@@ -39,16 +39,16 @@ const getProductDetail = async (productId) => {
   try {
     const data = await appDataSource.query(
       `SELECT
-        p.name,
-        p.model_number,
+        p.name AS productName,
+        p.model_number AS modelNumber,
         p.description,
         p.price,
-        p.discount_price,
-        p.main_image,
-        p.sub_image,
+        p.discount_price AS dicountPrice,
+        p.main_image AS mainImage,
+        p.sub_image AS subImage,
         ps.status,
-        po.options,
-        di.images
+        po.options AS productOptions,
+        di.images AS detailImages
       FROM products p
       INNER JOIN products_status ps ON p.status_id = ps.id
       INNER JOIN (
