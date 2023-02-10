@@ -2,7 +2,7 @@ const { appDataSource } = require("./appDataSource");
 
 const getItems = async (userId) => {
   try {
-    const cartData = await appDataSource.query(
+    return appDataSource.query(
       `SELECT 
         c.user_id AS userId,
         c.id AS cartId,
@@ -23,11 +23,10 @@ const getItems = async (userId) => {
       JOIN product_options po ON c.product_option_id = po.id
       JOIN products p ON po.product_id = p.id
       WHERE user_id = ?
-      ORDER BY p.id, po.id;
+      ORDER BY c.id DESC;
       `,
       [userId]
     );
-    return cartData;
   } catch (err) {
     err.message = "FAIL TO GET ITEMS IN CART";
     err.statuscode = 500;
@@ -35,9 +34,9 @@ const getItems = async (userId) => {
   }
 };
 
-const addItem = async (userId, productOptionId, quantity) => {
+const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   try {
-    return await appDataSource.query(
+    return appDataSource.query(
       `INSERT INTO carts
         (
           user_id,
@@ -57,34 +56,14 @@ const addItem = async (userId, productOptionId, quantity) => {
   }
 };
 
-const updateItemQuantity = async (userId, productOptionId, updateQuantity) => {
+const deleteItems = async (userId, cartId) => {
   try {
-    return await appDataSource.query(
-      `UPDATE carts
-        SET quantity = quantity + ?
-        WHERE user_id = ? AND product_option_id = ?;
-      `,
-      [updateQuantity, userId, productOptionId]
-    );
-  } catch (err) {
-    err.message = "FAIL TO UPDATE ITEM QUANTITY IN CART";
-    err.statuscode = 500;
-    throw err;
-  }
-};
-
-const deleteItems = async (userId, selectedItems) => {
-  try {
-    const selectedItemsString = selectedItems
-      .map((el) => el.productOptionId)
-      .join(",");
-
     const deleteItems = await appDataSource.query(
       `DELETE FROM carts
         WHERE user_id = ? 
-        AND product_option_id IN ( ${selectedItemsString} )
+        AND id IN (?);
       `,
-      [userId]
+      [userId, cartId]
     );
     if (!deleteItems.affectedRows) throw err;
   } catch (err) {
@@ -138,8 +117,7 @@ const checkItemInventory = async (productOptionId) => {
 
 module.exports = {
   getItems,
-  addItem,
-  updateItemQuantity,
+  createOrUpdateItem,
   deleteItems,
   checkItemInCart,
   checkItemInventory,

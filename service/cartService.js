@@ -1,17 +1,24 @@
 const cartDao = require("../models/cartDao");
 
-const addItem = async (userId, productOptionId, quantity) => {
+const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   try {
     const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
     const itemInventory = await cartDao.checkItemInventory(productOptionId);
     const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
 
     if (itemInventory < cartQuantity + quantity) {
-      const err = new Error(`CANNOT PURCHSE MORE THAN ${itemInventory}`);
+      const err = new Error(`CANNOT PURCHSE MORE!`);
       throw err;
     }
 
-    await cartDao.addItem(userId, productOptionId, quantity);
+    if (itemsInCart && itemsInCart.quantity + quantity <= 0) {
+      const err = new Error(`CANNOT DECREASE QUANTITY BELOW 0`);
+      err.statusCode = 400;
+      throw err;
+    }
+
+    await cartDao.createOrUpdateItem(userId, productOptionId, quantity);
+    return cartDao.checkItemInCart(userId, productOptionId);
   } catch (err) {
     throw err;
   }
@@ -25,44 +32,12 @@ const getItems = async (userId) => {
   }
 };
 
-const updateItemQuantity = async (userId, productOptionId, updateQuantity) => {
+const deleteItems = async (userId, cartId) => {
   try {
-    const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
-    const itemInventory = await cartDao.checkItemInventory(productOptionId);
-
-    if (!itemsInCart) {
-      const err = new Error(`CANNOT FOUND ITEM IN CART`);
-      throw err;
-    }
-
-    if (itemInventory < itemsInCart.quantity + Number(updateQuantity)) {
-      const err = new Error(`CANNOT PURCHSE MORE THAN ${itemInventory}`);
-      throw err;
-    }
-
-    if (itemsInCart.quantity + Number(updateQuantity) <= 0) {
-      await cartDao.updateItemQuantity(
-        userId,
-        productOptionId,
-        1 - itemsInCart.quantity
-      );
-      const err = new Error(`CANNOT DECREASE QUANTITY BELOW 0`);
-      throw err;
-    }
-
-    await cartDao.updateItemQuantity(userId, productOptionId, updateQuantity);
-    return await cartDao.checkItemInCart(userId, productOptionId);
+    return await cartDao.deleteItems(userId, cartId);
   } catch (err) {
     throw err;
   }
 };
 
-const deleteItems = async (userId, selectedItems) => {
-  try {
-    return await cartDao.deleteItems(userId, selectedItems);
-  } catch (err) {
-    throw err;
-  }
-};
-
-module.exports = { addItem, getItems, updateItemQuantity, deleteItems };
+module.exports = { createOrUpdateItem, getItems, deleteItems };
