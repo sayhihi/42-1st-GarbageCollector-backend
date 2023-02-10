@@ -1,8 +1,8 @@
 const productDao = require("../models/productDao");
 
-const getproducts = async (categoryId, sort) => {
+const getProducts = async (categoryId, sort) => {
   try {
-    return await productDao.getproducts(categoryId, sort);
+    return productDao.getProducts(categoryId, sort);
   } catch (err) {
     const error = new Error("INVALID_DATA");
     error.statusCode = 500;
@@ -12,7 +12,7 @@ const getproducts = async (categoryId, sort) => {
 
 const getProductDetail = async (productId) => {
   try {
-    return await productDao.getProductDetail(productId);
+    return productDao.getProductDetail(productId);
   } catch (err) {
     const error = new Error("INVAILD_DATA");
     error.statusCode = 500;
@@ -21,6 +21,6 @@ const getProductDetail = async (productId) => {
 };
 
 module.exports = {
-  getproducts,
+  getProducts,
   getProductDetail,
 };

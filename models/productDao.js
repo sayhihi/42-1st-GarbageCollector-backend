@@ -1,20 +1,19 @@
 const { appDataSource } = require("./appDataSource");
 
-const getproducts = async (categoryId, sort) => {
+const getProducts = async (categoryId, sort = "NONE") => {
   try {
     const whereClause = categoryId ? `WHERE p.category_id = ${categoryId}` : ``;
 
-    let sorted = "";
-    if (sort === "HIGH_PRICE") {
-      sorted = `ORDER BY p.price DESC`;
-    } else if (sort === "LOW_PRICE") {
-      sorted = `ORDER BY p.price`;
-    } else if (sort === "NEW") {
-      sorted = `ORDER BY p.create_at DESC`;
-    }
+    const sortOption = Object.freeze({
+      HIGH_PRICE: "ORDER BY p.price DESC",
+      LOW_PRICE: "ORDER BY p.price",
+      NEW: "ORDER BY p.create_at DESC",
+      NONE: "",
+    });
 
-    const data = await appDataSource.query(
+    return appDataSource.query(
       `SELECT
+        p.id AS productId,
         p.name AS productName,
         p.main_image AS mainImage, 
         p.sub_image AS subImage, 
@@ -26,10 +25,9 @@ const getproducts = async (categoryId, sort) => {
       INNER JOIN products_status s 
       ON p.status_id = s.id
       ${whereClause}
-      ${sorted};
+      ${sortOption[sort]};
       `
     );
-    return data;
   } catch (err) {
     const error = new Error("INVALID_LISTS");
     error.statusCode = 500;
@@ -92,6 +90,6 @@ const getProductDetail = async (productId) => {
 };
 
 module.exports = {
-  getproducts,
+  getProducts,
   getProductDetail,
 };
