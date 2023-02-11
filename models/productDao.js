@@ -51,7 +51,7 @@ const getProductDetail = async (productId) => {
         di.images AS detailImages
       FROM products p
       INNER JOIN products_status ps ON p.status_id = ps.id
-      INNER JOIN (
+      LEFT JOIN (
         SELECT
         product_id,
         JSON_ARRAYAGG(
@@ -65,7 +65,7 @@ const getProductDetail = async (productId) => {
             FROM product_options
             GROUP BY product_id
             ) po ON po.product_id = p.id
-            INNER JOIN (
+            LEFT JOIN (
               SELECT
               product_id,
               JSON_ARRAYAGG(
