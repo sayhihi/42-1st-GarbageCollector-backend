@@ -1,3 +1,4 @@
+const { DataSource } = require("typeorm");
 const { appDataSource } = require("./appDataSource");
 
 const createUser = async (
@@ -70,8 +71,52 @@ const checkRegisterdPhoneNumber = async (phoneNumber) => {
     throw err;
   }
 };
+
+const checkRegistuserId = async (userId) => {
+  try {
+    const [result] = await appDataSource.query(
+      `SELECT EXIST(
+        SELECT
+          id
+        FROM
+          users
+        WHERE
+          id=?
+      ) as registed`,
+      [userId]
+    );
+    return !!parseInt(result.registed);
+  } catch (err) {
+    console.error(err);
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
+const getUserPasswordByEmail = async (email) => {
+  try {
+    const [result] = await appDataSource.query(
+      `SELECT
+        password
+      FROM
+        users
+      WHERE
+        email=?
+      `,
+      [email]
+    );
+    return result.password;
+  } catch (err) {
+    console.error(err);
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
 module.exports = {
   createUser,
   checkRegisterdEmail,
   checkRegisterdPhoneNumber,
+  getUserPasswordByEmail,
+  checkRegistuserId,
 };
