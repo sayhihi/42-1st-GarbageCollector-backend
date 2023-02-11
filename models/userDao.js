@@ -72,10 +72,10 @@ const checkRegisterdPhoneNumber = async (phoneNumber) => {
   }
 };
 
-const checkRegistuserId = async (userId) => {
+const checkRegisteruserId = async (userId) => {
   try {
     const [result] = await appDataSource.query(
-      `SELECT EXIST(
+      `SELECT EXISTS(
         SELECT
           id
         FROM
@@ -92,6 +92,26 @@ const checkRegistuserId = async (userId) => {
     throw err;
   }
 };
+// const checkRegisterPassword = async (email) => {
+//   try {
+//     const [result] = await appDataSource.query(
+//       `SELECT EXISTS(
+//         SELECT
+//           password
+//         FROM
+//           users
+//         WHERE
+//           password=?
+//       ) as registed`,
+//       [email]
+//     );
+//     return !!parseInt(result.registed);
+//   } catch (err) {
+//     console.error(err);
+//     err.statusCode = 500;
+//     throw err;
+//   }
+// };
 
 const getUserPasswordByEmail = async (email) => {
   try {
@@ -118,5 +138,5 @@ module.exports = {
   checkRegisterdEmail,
   checkRegisterdPhoneNumber,
   getUserPasswordByEmail,
-  checkRegistuserId,
+  checkRegisteruserId,
 };

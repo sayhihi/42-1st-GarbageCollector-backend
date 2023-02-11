@@ -40,7 +40,7 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
 const login = async (email, password) => {
   try {
     const hashedPassword = await userDao.getUserPasswordByEmail(email);
-    const checkHash = bycrpt.compare(password, hashedPassword);
+    const checkHash = await bycrpt.compare(password, hashedPassword);
 
     if (!checkHash) {
       const err = new Error("WRONG_PASSWORD");
@@ -49,7 +49,7 @@ const login = async (email, password) => {
     }
     const currentTime = currentUtcKoreaTime();
     const ExpireTime = currentTime + 60 * 60 * 24;
-    const userId = await userDao.getUserIdByEmail(email);
+    const userId = await userDao.checkRegisteruserId(email);
     const payload = {
       iss: "garbageCollectoOwner",
       sub: "garbageWorld",
