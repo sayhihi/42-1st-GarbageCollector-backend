@@ -5,7 +5,7 @@ const getProducts = async (categoryId, sort) => {
     return productDao.getProducts(categoryId, sort);
   } catch (err) {
     const error = new Error("INVALID_DATA");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
@@ -15,7 +15,7 @@ const getProductDetail = async (productId) => {
     return productDao.getProductDetail(productId);
   } catch (err) {
     const error = new Error("INVAILD_DATA");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };

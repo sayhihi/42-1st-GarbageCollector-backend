@@ -30,7 +30,7 @@ const getProducts = async (categoryId, sort = "NONE") => {
     );
   } catch (err) {
     const error = new Error("INVALID_LISTS");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
@@ -84,7 +84,7 @@ const getProductDetail = async (productId) => {
     return data;
   } catch (err) {
     const error = new Error("INVALID_PRODUCT_DETAIL");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
