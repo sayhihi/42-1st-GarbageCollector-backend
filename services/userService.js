@@ -48,7 +48,7 @@ const login = async (email, password) => {
       throw err;
     }
     const currentTime = currentUtcKoreaTime();
-    const ExpireTime = process.env.ExpireTime;
+    const ExpireTime = currentTime + 60 * 60 * 24;
     const userId = await userDao.checkRegisteruserId(email);
     const payload = {
       iss: "garbageCollectoOwner",
