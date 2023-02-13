@@ -92,26 +92,6 @@ const checkRegisteruserId = async (userId) => {
     throw err;
   }
 };
-// const checkRegisterPassword = async (email) => {
-//   try {
-//     const [result] = await appDataSource.query(
-//       `SELECT EXISTS(
-//         SELECT
-//           password
-//         FROM
-//           users
-//         WHERE
-//           password=?
-//       ) as registed`,
-//       [email]
-//     );
-//     return !!parseInt(result.registed);
-//   } catch (err) {
-//     console.error(err);
-//     err.statusCode = 500;
-//     throw err;
-//   }
-// };
 
 const getUserPasswordByEmail = async (email) => {
   try {

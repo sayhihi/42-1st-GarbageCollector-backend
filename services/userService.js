@@ -48,7 +48,7 @@ const login = async (email, password) => {
       throw err;
     }
     const currentTime = currentUtcKoreaTime();
-    const ExpireTime = currentTime + 60 * 60 * 24;
+    const ExpireTime = process.env.ExpireTime;
     const userId = await userDao.checkRegisteruserId(email);
     const payload = {
       iss: "garbageCollectoOwner",
@@ -57,8 +57,7 @@ const login = async (email, password) => {
       exp: ExpireTime,
       userId: userId,
     };
-    const token = jwt.sign(payload, process.env.SECRET_KEY);
-    return token;
+    return jwt.sign(payload, process.env.SECRET_KEY);
   } catch (err) {
     console.error(err);
     err.statusCode = 500;
