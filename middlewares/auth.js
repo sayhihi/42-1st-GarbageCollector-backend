@@ -8,7 +8,7 @@ const checkValidToken = async (req, res, next) => {
       const err = new Error("NOT_EXIST_TOKEN");
       throw err;
     }
-    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const user = await userDao.checkRegisteruserId(decoded.userId);
     if (!user) {
       const err = new Error("INVALID_TOKEN");

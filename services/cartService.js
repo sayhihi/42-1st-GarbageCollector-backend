@@ -18,7 +18,17 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
     }
 
     await cartDao.createOrUpdateItem(userId, productOptionId, quantity);
-    return cartDao.checkItemInCart(userId, productOptionId);
+
+    const cartData = await cartDao.getItems(userId);
+    const deliveryFee = await calculateDeliveryFee(cartData);
+
+    const checkItemInCart = await cartDao.checkItemInCart(
+      userId,
+      productOptionId
+    );
+    checkItemInCart.deliveryFee = deliveryFee;
+
+    return checkItemInCart;
   } catch (err) {
     throw err;
   }
@@ -26,7 +36,13 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
 
 const getItems = async (userId) => {
   try {
-    return await cartDao.getItems(userId);
+    const cart = await cartDao.getItems(userId);
+
+    const deliveryFee = await calculateDeliveryFee(cart);
+    const cartItems = { cartItems: cart };
+    cartItems.deliveryFee = deliveryFee;
+
+    return cartItems;
   } catch (err) {
     throw err;
   }
@@ -38,6 +54,18 @@ const deleteItems = async (userId, cartId) => {
   } catch (err) {
     throw err;
   }
+};
+
+const calculateDeliveryFee = async (cartData) => {
+  const DELIVERY_FEE = 3000;
+
+  let cartSum = 0;
+  cartData.forEach((el) => {
+    cartSum = cartSum + Number(el.productTotalPriceWithQuantity);
+  });
+  const deliveryFee = cartSum < 30000 ? DELIVERY_FEE : 0;
+
+  return deliveryFee;
 };
 
 module.exports = { createOrUpdateItem, getItems, deleteItems };

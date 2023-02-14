@@ -1,8 +1,9 @@
-const cartService = require("../service/cartService");
+const cartService = require("../services/cartService");
 
 const createOrUpdateItem = async (req, res) => {
   try {
-    const { userId, productOptionId, quantity } = req.body;
+    const { productOptionId, quantity } = req.body;
+    const userId = req.user;
 
     if (!userId || !productOptionId || !quantity) {
       const err = new Error("KEY ERROR");
@@ -18,7 +19,7 @@ const createOrUpdateItem = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: `ITEM SUCCESSFULLY UPDATED IN CART`, data: cartData });
+      .json({ message: `ITEM SUCCESSFULLY UPDATED IN CART`, cartData });
   } catch (err) {
     console.error(err);
     res.status(err.statusCode || 500).json({ message: err.message });
@@ -27,7 +28,7 @@ const createOrUpdateItem = async (req, res) => {
 
 const getItems = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.user;
 
     if (!userId) {
       const err = new Error("KEY ERROR");
@@ -46,7 +47,7 @@ const getItems = async (req, res) => {
 
 const deleteItems = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.user;
     const { cartId } = req.query;
 
     if (!userId || !cartId) {
