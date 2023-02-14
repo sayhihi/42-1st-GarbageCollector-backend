@@ -49,7 +49,7 @@ const login = async (email, password) => {
     }
     const currentTime = currentUtcKoreaTime();
     const ExpireTime = currentTime + 60 * 60 * 24;
-    const userId = await userDao.checkRegisteruserId(email);
+    const userId = await userDao.getUserIdByEmail(email);
     const payload = {
       iss: "garbageCollectoOwner",
       sub: "garbageWorld",

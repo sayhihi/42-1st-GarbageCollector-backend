@@ -113,10 +113,45 @@ const getUserPasswordByEmail = async (email) => {
   }
 };
 
+const getUserIdByEmail = async (email) => {
+  try {
+    const [result] = await appDataSource.query(
+      `SELECT
+        id
+      FROM
+        users
+      WHERE
+        email=?
+      `,
+      [email]
+    );
+    return result.id;
+  } catch (err) {
+    console.error(err);
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
+const getUserPoint = async (userId) => {
+  const result = await appDataSource.query(
+    `SELECT
+    amount
+    FROM points
+    JOIN users
+    ON points.user_id = users.id
+    WHERE points.user_id = ?;`,
+    [userId]
+  );
+  return result;
+};
+
 module.exports = {
   createUser,
   checkRegisterdEmail,
   checkRegisterdPhoneNumber,
   getUserPasswordByEmail,
   checkRegisteruserId,
+  getUserIdByEmail,
+  getUserPoint,
 };
