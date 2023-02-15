@@ -32,7 +32,7 @@ const prepareOrder = async (userId, productOptions) => {
       discount,
       deleveryFee,
       totalPrice,
-      itemsInfo,
+      productOptions: itemsInfo,
     };
 
     return data;
