@@ -1,4 +1,3 @@
-const { DataSource } = require("typeorm");
 const { appDataSource } = require("./appDataSource");
 
 const createUser = async (
@@ -138,8 +137,6 @@ const getUserPoint = async (userId) => {
     `SELECT
     amount
     FROM points
-    JOIN users
-    ON points.user_id = users.id
     WHERE points.user_id = ?;`,
     [userId]
   );

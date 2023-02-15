@@ -56,6 +56,43 @@ const createOrderPayment = async (
   }
 };
 
+const prepareOrder = async (userId, productOptions) => {
+  try {
+    const userPoint = await userDao.getUserPoint(userId);
+
+    let itemsInfo = [];
+    for (i = 0; i < productOptions.length; i++) {
+      const itemInfo = await orderDao.prepareOrder(
+        productOptions[i].productOptionId,
+        productOptions[i].quantity
+      );
+      itemInfo.cartId = productOptions[i].cartId;
+      itemInfo.quantity = productOptions[i].quantity;
+      itemsInfo.push(itemInfo);
+    }
+
+    const {
+      totalPriceBeforeDiscount,
+      totalPriceAfterDiscount,
+      deleveryFee,
+      checkTotalPrice,
+      discount,
+    } = await getTotalPrice(productOptions);
+
+    return {
+      userPoint,
+      totalPriceBeforeDiscount,
+      totalPriceAfterDiscount,
+      discount,
+      deleveryFee,
+      checkTotalPrice,
+      productOptions: itemsInfo,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getTotalPrice = async (productOptions) => {
   let totalPriceBeforeDiscount = 0;
   let totalPriceAfterDiscount = 0;
@@ -83,4 +120,5 @@ const getTotalPrice = async (productOptions) => {
 
 module.exports = {
   createOrderPayment,
+  prepareOrder,
 };
