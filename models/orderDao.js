@@ -1,11 +1,9 @@
 const { appDataSource } = require("./appDataSource");
 
-const prepareOrder = async (cartId, productOptionId, quantity) => {
+const prepareOrder = async (productOptionId, quantity) => {
   try {
     const [result] = await appDataSource.query(
       `SELECT 
-        ? AS cartId,
-        ? AS quantity,
          po.id AS productOptionId,
          p.name AS productName,
          po.name AS productOptionName,
@@ -17,7 +15,7 @@ const prepareOrder = async (cartId, productOptionId, quantity) => {
       JOIN products p ON p.id = po.product_id
       WHERE po.id = ?;
        `,
-      [cartId, quantity, quantity, quantity, productOptionId]
+      [quantity, quantity, productOptionId]
     );
 
     return result;

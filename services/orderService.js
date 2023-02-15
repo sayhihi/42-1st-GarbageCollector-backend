@@ -9,10 +9,11 @@ const prepareOrder = async (userId, productOptions) => {
     let itemsInfo = [];
     for (i = 0; i < productOptions.length; i++) {
       const itemInfo = await orderDao.prepareOrder(
-        productOptions[i].cartId,
         productOptions[i].productOptionId,
         productOptions[i].quantity
       );
+      itemInfo.cartId = productOptions[i].cartId;
+      itemInfo.quantity = productOptions[i].quantity;
       itemsInfo.push(itemInfo);
     }
 
