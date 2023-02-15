@@ -1,40 +1,27 @@
+const { catchAsync } = require("../utills/error");
 const userService = require("../services/userService");
 
-const signup = async (req, res) => {
-  try {
-    const { email, password, name, birth, phoneNumber, address } = req.body;
-    if (!email || !password || !name || !birth || !phoneNumber) {
-      return res.status(400).json({ message: "KEY_ERROR" });
-    }
-    await userService.signup(
-      email,
-      password,
-      name,
-      birth,
-      phoneNumber,
-      address
-    );
-    return res.status(201).json({ message: "SUCCESS_SIGNUP" });
-  } catch (err) {
-    console.log(err);
-    return res.status(err.statusCode || 500).json({ message: err.message });
+const signup = catchAsync(async (req, res) => {
+  const { email, password, name, birth, phoneNumber, address } = req.body;
+  if (!email || !password || !name || !birth || !phoneNumber) {
+    const err = new Error("KEY_ERROR");
+    err.statusCode = 400;
+    throw err;
   }
-};
+  await userService.signup(email, password, name, birth, phoneNumber, address);
+  return res.status(201).json({ message: "SUCCESS_SIGNUP" });
+});
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if ((!email, !password)) {
-      return res.status(400).json({ message: "KEY_ERROR" });
-    }
-    const accessToken = await userService.login(email, password);
-
-    return res.status(200).json({ accessToken });
-  } catch (err) {
-    console.error(err);
-    return res.status(err.statusCode || 500).json({ message: err.message });
+const login = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  if ((!email, !password)) {
+    const err = new Error("KEY_ERROR");
+    err.statusCode = 400;
+    throw err;
   }
-};
+  const accessToken = await userService.login(email, password);
+  return res.status(200).json({ accessToken });
+});
 
 module.exports = {
   signup,
