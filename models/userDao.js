@@ -122,6 +122,25 @@ const getUserIdByEmail = async (email) => {
   }
 };
 
+const getUserPoint = async (userId) => {
+  try {
+    const [result] = await appDataSource.query(
+      `SELECT 
+        amount
+      FROM points
+      WHERE user_id = ?;
+      `,
+      [userId]
+    );
+
+    return result.amount;
+  } catch (err) {
+    const error = new Error("FAIL TO GET USER POINT");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   checkRegisterdEmail,
@@ -129,4 +148,5 @@ module.exports = {
   getUserPasswordByEmail,
   checkRegisteruserId,
   getUserIdByEmail,
+  getUserPoint,
 };
