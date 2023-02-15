@@ -60,7 +60,6 @@ const prepareOrder = async (userId, productOptions) => {
   try {
     const [point] = await userDao.getUserPoint(userId);
     const userPoint = point.amount;
-    console.log(userPoint);
     let itemsInfo = [];
     for (i = 0; i < productOptions.length; i++) {
       const itemInfo = await orderDao.prepareOrder(
