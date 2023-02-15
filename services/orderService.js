@@ -25,7 +25,7 @@ const prepareOrder = async (userId, productOptions) => {
       discount,
     } = await getTotalPrice(productOptions);
 
-    const data = {
+    return {
       userPoint,
       totalPriceBeforeDiscount,
       totalPriceAfterDiscount,
@@ -34,8 +34,6 @@ const prepareOrder = async (userId, productOptions) => {
       totalPrice,
       productOptions: itemsInfo,
     };
-
-    return data;
   } catch (err) {
     throw err;
   }
