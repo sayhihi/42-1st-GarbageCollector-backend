@@ -16,12 +16,13 @@ const prepareOrder = async (userId, productOptions) => {
       itemsInfo.push(itemInfo);
     }
 
-    const { totalPriceBeforeDiscount, totalPriceAfterDiscount } =
-      await getTotalPrice(productOptions);
-
-    const deleveryFee = totalPriceAfterDiscount < 30000 ? DELIVERY_FEE : 0;
-    const totalPrice = totalPriceAfterDiscount + deleveryFee;
-    const discount = totalPriceBeforeDiscount - totalPriceAfterDiscount;
+    const {
+      totalPriceBeforeDiscount,
+      totalPriceAfterDiscount,
+      deleveryFee,
+      totalPrice,
+      discount,
+    } = await getTotalPrice(productOptions);
 
     const data = {
       userPoint,
@@ -50,7 +51,18 @@ const getTotalPrice = async (productOptions) => {
     totalPriceAfterDiscount += Number(data.itemPriceAfterDiscount);
     totalPriceBeforeDiscount += Number(data.itemPriceBeforeDiscount);
   }
-  return { totalPriceBeforeDiscount, totalPriceAfterDiscount };
+
+  const deleveryFee = totalPriceAfterDiscount < 30000 ? DELIVERY_FEE : 0;
+  const totalPrice = totalPriceAfterDiscount + deleveryFee;
+  const discount = totalPriceBeforeDiscount - totalPriceAfterDiscount;
+
+  return {
+    totalPriceBeforeDiscount,
+    totalPriceAfterDiscount,
+    deleveryFee,
+    totalPrice,
+    discount,
+  };
 };
 
 module.exports = { prepareOrder };
