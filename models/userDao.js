@@ -1,4 +1,3 @@
-const { DataSource } = require("typeorm");
 const { appDataSource } = require("./appDataSource");
 
 const createUser = async (
