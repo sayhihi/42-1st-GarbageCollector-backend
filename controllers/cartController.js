@@ -1,7 +1,22 @@
 const cartService = require("../services/cartService");
 const { catchAsync } = require("../utills/error");
 
-const createOrUpdateItem = catchAsync(async (req, res) => {
+const createItem = catchAsync(async (req, res) => {
+  const { productOptions } = req.body;
+  const userId = req.user;
+
+  if (!userId || !productOptions) {
+    const err = new Error("KEY ERROR");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  await cartService.createItem(userId, productOptions);
+
+  return res.status(201).json({ message: `ITEM_SUCCESSFULLY_CREATED_IN_CART` });
+});
+
+const updateItem = catchAsync(async (req, res) => {
   const { productOptionId, quantity } = req.body;
   const userId = req.user;
 
@@ -51,7 +66,8 @@ const deleteItems = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  createOrUpdateItem,
+  createItem,
+  updateItem,
   getItems,
   deleteItems,
 };

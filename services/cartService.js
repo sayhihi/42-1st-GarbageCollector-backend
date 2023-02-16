@@ -1,12 +1,22 @@
 const cartDao = require("../models/cartDao");
 
+const createItem = async (userId, productOptions) => {
+  for (i = 0; i < productOptions.length; i++) {
+    await createOrUpdateItem(
+      userId,
+      productOptions[i].productOptionId,
+      productOptions[i].quantity
+    );
+  }
+};
+
 const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
-  const itemInventory = await cartDao.checkItemInventory(productOptionId);
+  const item = await cartDao.checkItemInventory(productOptionId);
   const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
 
-  if (itemInventory < cartQuantity + quantity) {
-    const err = new Error(`CANNOT_PURCHSE_MORE!`);
+  if (item.inventory < cartQuantity + quantity) {
+    const err = new Error(`CANNOT_PURCHSE_MORE_${item.name}!`);
     err.statusCode = 400;
     throw err;
   }
@@ -57,4 +67,4 @@ const calculateDeliveryFee = async (cartData) => {
   return deliveryFee;
 };
 
-module.exports = { createOrUpdateItem, getItems, deleteItems };
+module.exports = { createItem, createOrUpdateItem, getItems, deleteItems };
