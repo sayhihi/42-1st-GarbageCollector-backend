@@ -43,7 +43,7 @@ const getProductDetail = async (productId) => {
         p.model_number AS modelNumber,
         p.description,
         p.price,
-        p.discount_price AS dicountPrice,
+        p.discount_price AS discountPrice,
         p.main_image AS mainImage,
         p.sub_image AS subImage,
         ps.status,
@@ -56,8 +56,8 @@ const getProductDetail = async (productId) => {
         product_id,
         JSON_ARRAYAGG(
           JSON_OBJECT(
-            "optionId", id,
-            "optionName" , name,
+            "productOptionId", id,
+            "productOptionName" , name,
             "inventory", inventory,
             "extraPrice", extra_price
             )
@@ -89,7 +89,37 @@ const getProductDetail = async (productId) => {
   }
 };
 
+const getInventoryByProductOptionId = async (productOptionId) => {
+  const [result] = await appDataSource.query(
+    `
+    SELECT
+      id,
+      inventory
+    FROM product_options
+    WHERE id = ? 
+  `,
+    [productOptionId]
+  );
+  return result;
+};
+
+const getPricebyproductOptionId = async (productOptionId) => {
+  const result = appDataSource.query(
+    `SELECT
+    po.id,
+    po.extra_price,
+    p.price
+    FROM product_options po
+    JOIN products p
+    ON po.product_id = p.id
+    WHERE po.product_id = ?;
+    `,
+    [productOptionId]
+  );
+};
+
 module.exports = {
   getProducts,
   getProductDetail,
+  getInventoryByProductOptionId,
 };

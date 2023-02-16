@@ -1,11 +1,63 @@
+const uuid = require("uuid");
+
 const orderDao = require("../models/orderDao");
+const productDao = require("../models/productDao");
 const userDao = require("../models/userDao");
+
 const DELIVERY_FEE = 3000;
+
+const createOrderPayment = async (
+  userId,
+  receiver,
+  address,
+  phoneNumber,
+  paymentMethod,
+  totalPrice,
+  productOptions
+) => {
+  try {
+    for (let i = 0; i < productOptions.length; i++) {
+      const getInventory = await productDao.getInventoryByProductOptionId(
+        productOptions[i].productOptionId
+      );
+      const inventory = getInventory.inventory;
+      const quantity = productOptions[i].quantity;
+      if (quantity > inventory) {
+        throw new Error("INVENTROY_QUANTITY_EXCEEDED");
+      }
+    }
+    const userPoint = await userDao.getUserPoint(userId);
+    const { checkTotalPrice } = await getTotalPrice(productOptions);
+
+    if (Number(totalPrice) !== checkTotalPrice) {
+      throw new Error("THE_TOTAL_PRICES_DO_NOT_MATCH");
+    }
+
+    if (Number(totalPrice) > Number(userPoint)) {
+      throw new Error("TOTALPRICE_EXCEEDED_POINTS");
+    }
+    const orderNumber = uuid.v4();
+
+    await orderDao.createOrderPayment(
+      userId,
+      receiver,
+      address,
+      phoneNumber,
+      paymentMethod,
+      totalPrice,
+      productOptions,
+      orderNumber
+    );
+
+    return orderNumber;
+  } catch (err) {
+    throw err;
+  }
+};
 
 const prepareOrder = async (userId, productOptions) => {
   try {
     const userPoint = await userDao.getUserPoint(userId);
-
     let itemsInfo = [];
     for (i = 0; i < productOptions.length; i++) {
       const itemInfo = await orderDao.prepareOrder(
@@ -21,7 +73,7 @@ const prepareOrder = async (userId, productOptions) => {
       totalPriceBeforeDiscount,
       totalPriceAfterDiscount,
       deleveryFee,
-      totalPrice,
+      checkTotalPrice,
       discount,
     } = await getTotalPrice(productOptions);
 
@@ -31,7 +83,7 @@ const prepareOrder = async (userId, productOptions) => {
       totalPriceAfterDiscount,
       discount,
       deleveryFee,
-      totalPrice,
+      checkTotalPrice,
       productOptions: itemsInfo,
     };
   } catch (err) {
@@ -52,16 +104,19 @@ const getTotalPrice = async (productOptions) => {
   }
 
   const deleveryFee = totalPriceAfterDiscount < 30000 ? DELIVERY_FEE : 0;
-  const totalPrice = totalPriceAfterDiscount + deleveryFee;
+  const checkTotalPrice = totalPriceAfterDiscount + deleveryFee;
   const discount = totalPriceBeforeDiscount - totalPriceAfterDiscount;
 
   return {
     totalPriceBeforeDiscount,
     totalPriceAfterDiscount,
     deleveryFee,
-    totalPrice,
+    checkTotalPrice,
     discount,
   };
 };
 
-module.exports = { prepareOrder };
+module.exports = {
+  createOrderPayment,
+  prepareOrder,
+};
