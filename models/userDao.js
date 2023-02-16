@@ -134,14 +134,14 @@ const getUserIdByEmail = async (email) => {
 
 const getUserPoint = async (userId) => {
   try {
-    const result = await appDataSource.query(
+    const [result] = await appDataSource.query(
       `SELECT
     amount
     FROM points
     WHERE points.user_id = ?;`,
       [userId]
     );
-    return result;
+    return result.amount;
   } catch (err) {
     const error = new Error("FAIL_TO_GET_USER_POINT");
     error.statusCode = 400;

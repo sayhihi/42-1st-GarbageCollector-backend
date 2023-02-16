@@ -26,15 +26,14 @@ const createOrderPayment = async (
         throw new Error("INVENTROY_QUANTITY_EXCEEDED");
       }
     }
-    const IsUserPointMoreThanTotalPrice = await userDao.getUserPoint(userId);
-    const points = IsUserPointMoreThanTotalPrice[0].amount;
+    const userPoint = await userDao.getUserPoint(userId);
     const { checkTotalPrice } = await getTotalPrice(productOptions);
 
     if (Number(totalPrice) !== checkTotalPrice) {
       throw new Error("THE_TOTAL_PRICES_DO_NOT_MATCH");
     }
 
-    if (Number(totalPrice) > Number(points)) {
+    if (Number(totalPrice) > Number(userPoint)) {
       throw new Error("TOTALPRICE_EXCEEDED_POINTS");
     }
     const orderNumber = uuid.v4();
@@ -58,8 +57,7 @@ const createOrderPayment = async (
 
 const prepareOrder = async (userId, productOptions) => {
   try {
-    const [point] = await userDao.getUserPoint(userId);
-    const userPoint = point.amount;
+    const userPoint = await userDao.getUserPoint(userId);
     let itemsInfo = [];
     for (i = 0; i < productOptions.length; i++) {
       const itemInfo = await orderDao.prepareOrder(
