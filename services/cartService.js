@@ -3,11 +3,11 @@ const cartDao = require("../models/cartDao");
 const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   try {
     const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
-    const itemInventory = await cartDao.checkItemInventory(productOptionId);
+    const item = await cartDao.checkItemInventory(productOptionId);
     const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
 
-    if (itemInventory < cartQuantity + quantity) {
-      const err = new Error(`CANNOT PURCHSE MORE!`);
+    if (item.inventory < cartQuantity + quantity) {
+      const err = new Error(`CANNOT PURCHSE MORE ${item.name}!`);
       throw err;
     }
 

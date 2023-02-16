@@ -77,6 +77,8 @@ const checkItemInCart = async (userId, productOptionId) => {
   try {
     const [itemInCart] = await appDataSource.query(
       `SELECT 
+        c.id AS cartId,
+        po.id AS productOptionId,
         c.quantity AS quantity,
         ((p.discount_price + po.extra_price ) * c.quantity) AS productTotalPriceWithQuantity
         FROM carts c
@@ -100,6 +102,7 @@ const checkItemInventory = async (productOptionId) => {
   try {
     const [itemInventory] = await appDataSource.query(
       `SELECT 
+        name,
         inventory
         FROM product_options
         WHERE id = ?;
@@ -107,7 +110,7 @@ const checkItemInventory = async (productOptionId) => {
       [productOptionId]
     );
 
-    return itemInventory.inventory;
+    return itemInventory;
   } catch (err) {
     err.message = "FAIL TO CHECK ITEM INVENTORY";
     err.statuscode = 500;

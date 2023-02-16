@@ -1,6 +1,32 @@
 const cartService = require("../services/cartService");
 
-const createOrUpdateItem = async (req, res) => {
+const createItem = async (req, res) => {
+  try {
+    const { productOptions } = req.body;
+    const userId = req.user;
+
+    if (!userId || !productOptions) {
+      const err = new Error("KEY ERROR");
+      err.statusCode = 400;
+      throw err;
+    }
+
+    for (i = 0; i < productOptions.length; i++) {
+      await cartService.createOrUpdateItem(
+        userId,
+        productOptions[i].productOptionId,
+        productOptions[i].quantity
+      );
+    }
+
+    res.status(201).json({ message: `ITEM SUCCESSFULLY CREATED IN CART` });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+const updateItem = async (req, res) => {
   try {
     const { productOptionId, quantity } = req.body;
     const userId = req.user;
@@ -65,7 +91,8 @@ const deleteItems = async (req, res) => {
 };
 
 module.exports = {
-  createOrUpdateItem,
+  createItem,
+  updateItem,
   getItems,
   deleteItems,
 };
