@@ -103,21 +103,6 @@ const getInventoryByProductOptionId = async (productOptionId) => {
   return result;
 };
 
-const getPricebyproductOptionId = async (productOptionId) => {
-  const result = appDataSource.query(
-    `SELECT
-    po.id,
-    po.extra_price,
-    p.price
-    FROM product_options po
-    JOIN products p
-    ON po.product_id = p.id
-    WHERE po.product_id = ?;
-    `,
-    [productOptionId]
-  );
-};
-
 module.exports = {
   getProducts,
   getProductDetail,
