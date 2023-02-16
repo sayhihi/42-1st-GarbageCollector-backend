@@ -151,6 +151,24 @@ const getUserPoint = async (userId) => {
   }
 };
 
+const makeUserPoint = async (userId) => {
+  try {
+    const POINT = 10000;
+
+    return appDataSource.query(
+      `INSERT INTO points
+        (amount, user_id)
+        VALUES ( ?, ? );
+      `,
+      [POINT, userId]
+    );
+  } catch (err) {
+    const error = new Error("FAIL TO MAKE USER POINT");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   checkRegisterdEmail,
@@ -159,4 +177,5 @@ module.exports = {
   checkRegisteruserId,
   getUserIdByEmail,
   getUserPoint,
+  makeUserPoint,
 };

@@ -22,7 +22,7 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
 
     const hashedPassword = await bycrpt.hash(password, 12);
 
-    return userDao.createUser(
+    const user = await userDao.createUser(
       email,
       hashedPassword,
       name,
@@ -30,6 +30,10 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
       phoneNumber,
       address
     );
+
+    await userDao.makeUserPoint(user.insertId);
+
+    return user;
   } catch (err) {
     console.error(err);
     err.statusCode = 500;
