@@ -11,13 +11,7 @@ const createItem = async (req, res) => {
       throw err;
     }
 
-    for (i = 0; i < productOptions.length; i++) {
-      await cartService.createOrUpdateItem(
-        userId,
-        productOptions[i].productOptionId,
-        productOptions[i].quantity
-      );
-    }
+    await cartService.createItem(userId, productOptions);
 
     res.status(201).json({ message: `ITEM SUCCESSFULLY CREATED IN CART` });
   } catch (err) {

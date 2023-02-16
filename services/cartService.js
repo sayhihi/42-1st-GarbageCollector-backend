@@ -1,4 +1,17 @@
 const cartDao = require("../models/cartDao");
+const createItem = async (userId, productOptions) => {
+  try {
+    for (i = 0; i < productOptions.length; i++) {
+      await createOrUpdateItem(
+        userId,
+        productOptions[i].productOptionId,
+        productOptions[i].quantity
+      );
+    }
+  } catch (err) {
+    throw err;
+  }
+};
 
 const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   try {
@@ -68,4 +81,4 @@ const calculateDeliveryFee = async (cartData) => {
   return deliveryFee;
 };
 
-module.exports = { createOrUpdateItem, getItems, deleteItems };
+module.exports = { createItem, createOrUpdateItem, getItems, deleteItems };
