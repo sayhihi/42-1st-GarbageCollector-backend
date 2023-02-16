@@ -28,7 +28,7 @@ const getItems = async (userId) => {
       [userId]
     );
   } catch (err) {
-    err.message = "FAIL TO GET ITEMS IN CART";
+    err.message = "FAIL_TO_GET_ITEMS_IN_CART";
     err.statuscode = 500;
     throw err;
   }
@@ -50,7 +50,7 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
       [userId, productOptionId, quantity]
     );
   } catch (err) {
-    err.message = "FAIL TO ADD ITEM IN CART";
+    err.message = "FAIL_TO_ADD_ITEM_IN_CART";
     err.statuscode = 500;
     throw err;
   }
@@ -67,7 +67,7 @@ const deleteItems = async (userId, cartId) => {
     );
     if (!deleteItems.affectedRows) throw err;
   } catch (err) {
-    err.message = "FAIL TO DELETE ITEM IN CART";
+    err.message = "FAIL_TO_DELETE_ITEM_IN_CART";
     err.statuscode = 500;
     throw err;
   }
@@ -90,7 +90,7 @@ const checkItemInCart = async (userId, productOptionId) => {
 
     return itemInCart;
   } catch (err) {
-    err.message = "FAIL TO CHECK ITEMS IN CART";
+    err.message = "FAIL_TO_CHECK_ITEMS_IN_CART";
     err.statuscode = 500;
     throw err;
   }
@@ -109,7 +109,7 @@ const checkItemInventory = async (productOptionId) => {
 
     return itemInventory.inventory;
   } catch (err) {
-    err.message = "FAIL TO CHECK ITEM INVENTORY";
+    err.message = "FAIL_TO_CHECK_ITEM_INVENTORY";
     err.statuscode = 500;
     throw err;
   }

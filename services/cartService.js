@@ -6,13 +6,13 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
   const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
 
   if (itemInventory < cartQuantity + quantity) {
-    const err = new Error(`CANNOT PURCHSE MORE!`);
+    const err = new Error(`CANNOT_PURCHSE_MORE!`);
     err.statusCode = 400;
     throw err;
   }
 
   if (itemsInCart && itemsInCart.quantity + quantity <= 0) {
-    const err = new Error(`CANNOT DECREASE QUANTITY BELOW 0`);
+    const err = new Error(`CANNOT_DECREASE_QUANTITY_BELOW_0`);
     err.statusCode = 400;
     throw err;
   }

@@ -6,7 +6,7 @@ const createOrUpdateItem = catchAsync(async (req, res) => {
   const userId = req.user;
 
   if (!userId || !productOptionId || !quantity) {
-    const err = new Error("KEY ERROR");
+    const err = new Error("KEY_ERROR");
     err.statusCode = 400;
     throw err;
   }
@@ -19,14 +19,14 @@ const createOrUpdateItem = catchAsync(async (req, res) => {
 
   return res
     .status(201)
-    .json({ message: `ITEM SUCCESSFULLY UPDATED IN CART`, cartData });
+    .json({ message: `ITEM_SUCCESSFULLY_UPDATED_IN_CART`, cartData });
 });
 
 const getItems = catchAsync(async (req, res) => {
   const userId = req.user;
 
   if (!userId) {
-    const err = new Error("KEY ERROR");
+    const err = new Error("KEY_ERROR");
     err.statusCode = 400;
     throw err;
   }
@@ -41,13 +41,13 @@ const deleteItems = catchAsync(async (req, res) => {
   const { cartId } = req.query;
 
   if (!userId || !cartId) {
-    const err = new Error("KEY ERROR");
+    const err = new Error("KEY_ERROR");
     throw err;
   }
 
   await cartService.deleteItems(userId, cartId);
 
-  return res.status(200).json({ message: "ITEM SUCCESSFULLY DELETED" });
+  return res.status(200).json({ message: "ITEM_SUCCESSFULLY_DELETED" });
 });
 
 module.exports = {
