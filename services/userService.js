@@ -5,68 +5,60 @@ const userDao = require("../models/userDao");
 const checkValidation = require("../utills/validation-check");
 
 const signup = async (email, password, name, birth, phoneNumber, address) => {
-  try {
-    if (await userDao.checkRegisterdEmail(email)) {
-      const err = new Error("ALREADY_EXCIST_EMAIL");
-      throw err;
-    }
-    if (await userDao.checkRegisterdPhoneNumber(phoneNumber)) {
-      const err = new Error("ALREADY_EXCIST_PHONE_NUMBER");
-      throw err;
-    }
-
-    await checkValidation.checkValidationEmail(email);
-    await checkValidation.checkValidationPassword(password);
-    await checkValidation.checkValidationBirth(birth);
-    await checkValidation.checkValidationPhoneNumber(phoneNumber);
-
-    const hashedPassword = await bycrpt.hash(password, 12);
-
-    const user = await userDao.createUser(
-      email,
-      hashedPassword,
-      name,
-      birth,
-      phoneNumber,
-      address
-    );
-
-    await userDao.makeUserPoint(user.insertId);
-
-    return user;
-  } catch (err) {
-    console.error(err);
-    err.statusCode = 500;
+  if (await userDao.checkRegisterdEmail(email)) {
+    const err = new Error("ALREADY_EXCIST_EMAIL");
+    err.statusCode = 400;
     throw err;
   }
+  if (await userDao.checkRegisterdPhoneNumber(phoneNumber)) {
+    const err = new Error("ALREADY_EXCIST_PHONE_NUMBER");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  await checkValidation.checkValidationEmail(email);
+  await checkValidation.checkValidationPassword(password);
+  await checkValidation.checkValidationBirth(birth);
+  await checkValidation.checkValidationPhoneNumber(phoneNumber);
+
+  const hashedPassword = await bycrpt.hash(password, 12);
+
+  const user = await userDao.createUser(
+    email,
+    hashedPassword,
+    name,
+    birth,
+    phoneNumber,
+    address
+  );
+
+  const POINT = 10000;
+
+  await userDao.makeUserPoint(POINT, user.insertId);
+
+  return user;
 };
 
 const login = async (email, password) => {
-  try {
-    const hashedPassword = await userDao.getUserPasswordByEmail(email);
-    const checkHash = await bycrpt.compare(password, hashedPassword);
+  const hashedPassword = await userDao.getUserPasswordByEmail(email);
+  const checkHash = await bycrpt.compare(password, hashedPassword);
 
-    if (!checkHash) {
-      const err = new Error("WRONG_PASSWORD");
-      err.statusCode = 400;
-      throw err;
-    }
-    const currentTime = currentUtcKoreaTime();
-    const ExpireTime = currentTime + 60 * 60 * 24;
-    const userId = await userDao.getUserIdByEmail(email);
-    const payload = {
-      iss: "garbageCollectoOwner",
-      sub: "garbageWorld",
-      iat: currentTime,
-      exp: ExpireTime,
-      userId: userId,
-    };
-    return jwt.sign(payload, process.env.SECRET_KEY);
-  } catch (err) {
-    console.error(err);
-    err.statusCode = 500;
+  if (!checkHash) {
+    const err = new Error("WRONG_PASSWORD");
+    err.statusCode = 400;
     throw err;
   }
+  const currentTime = currentUtcKoreaTime();
+  const ExpireTime = currentTime + 60 * 60 * 24;
+  const userId = await userDao.getUserIdByEmail(email);
+  const payload = {
+    iss: "garbageCollectoOwner",
+    sub: "garbageWorld",
+    iat: currentTime,
+    exp: ExpireTime,
+    userId: userId,
+  };
+  return jwt.sign(payload, process.env.SECRET_KEY);
 };
 
 const currentUtcKoreaTime = () => {
