@@ -25,8 +25,7 @@ const getSearchProducts = async (keyword) => {
         p.model_number LIKE "%${keyword}%"`
     );
   } catch (err) {
-    console.error(err);
-    err.statusCode = 400;
+    err.statusCode = 500;
     throw err;
   }
 };

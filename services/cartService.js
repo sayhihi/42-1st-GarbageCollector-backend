@@ -1,72 +1,58 @@
 const cartDao = require("../models/cartDao");
+
 const createItem = async (userId, productOptions) => {
-  try {
-    for (i = 0; i < productOptions.length; i++) {
-      await createOrUpdateItem(
-        userId,
-        productOptions[i].productOptionId,
-        productOptions[i].quantity
-      );
-    }
-  } catch (err) {
-    throw err;
+  for (i = 0; i < productOptions.length; i++) {
+    await createOrUpdateItem(
+      userId,
+      productOptions[i].productOptionId,
+      productOptions[i].quantity
+    );
   }
 };
 
 const createOrUpdateItem = async (userId, productOptionId, quantity) => {
-  try {
-    const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
-    const item = await cartDao.checkItemInventory(productOptionId);
-    const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
+  const itemsInCart = await cartDao.checkItemInCart(userId, productOptionId);
+  const item = await cartDao.checkItemInventory(productOptionId);
+  const cartQuantity = itemsInCart ? itemsInCart.quantity : 0;
 
-    if (item.inventory < cartQuantity + quantity) {
-      const err = new Error(`CANNOT PURCHSE MORE ${item.name}!`);
-      throw err;
-    }
-
-    if (itemsInCart && itemsInCart.quantity + quantity <= 0) {
-      const err = new Error(`CANNOT DECREASE QUANTITY BELOW 0`);
-      err.statusCode = 400;
-      throw err;
-    }
-
-    await cartDao.createOrUpdateItem(userId, productOptionId, quantity);
-
-    const cartData = await cartDao.getItems(userId);
-    const deliveryFee = await calculateDeliveryFee(cartData);
-
-    const checkItemInCart = await cartDao.checkItemInCart(
-      userId,
-      productOptionId
-    );
-    checkItemInCart.deliveryFee = deliveryFee;
-
-    return checkItemInCart;
-  } catch (err) {
+  if (item.inventory < cartQuantity + quantity) {
+    const err = new Error(`CANNOT_PURCHSE_MORE_${item.name}!`);
+    err.statusCode = 400;
     throw err;
   }
+
+  if (itemsInCart && itemsInCart.quantity + quantity <= 0) {
+    const err = new Error(`CANNOT_DECREASE_QUANTITY_BELOW_0`);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  await cartDao.createOrUpdateItem(userId, productOptionId, quantity);
+
+  const cartData = await cartDao.getItems(userId);
+  const deliveryFee = await calculateDeliveryFee(cartData);
+
+  const checkItemInCart = await cartDao.checkItemInCart(
+    userId,
+    productOptionId
+  );
+  checkItemInCart.deliveryFee = deliveryFee;
+
+  return checkItemInCart;
 };
 
 const getItems = async (userId) => {
-  try {
-    const cart = await cartDao.getItems(userId);
+  const cart = await cartDao.getItems(userId);
 
-    const deliveryFee = await calculateDeliveryFee(cart);
-    const cartItems = { cartItems: cart };
-    cartItems.deliveryFee = deliveryFee;
+  const deliveryFee = await calculateDeliveryFee(cart);
+  const cartItems = { cartItems: cart };
+  cartItems.deliveryFee = deliveryFee;
 
-    return cartItems;
-  } catch (err) {
-    throw err;
-  }
+  return cartItems;
 };
 
 const deleteItems = async (userId, cartId) => {
-  try {
-    return await cartDao.deleteItems(userId, cartId);
-  } catch (err) {
-    throw err;
-  }
+  return await cartDao.deleteItems(userId, cartId);
 };
 
 const calculateDeliveryFee = async (cartData) => {

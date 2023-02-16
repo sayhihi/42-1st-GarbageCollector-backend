@@ -30,9 +30,8 @@ const createUser = async (
 };
 
 const checkRegisterdEmail = async (email) => {
-  try {
-    const [result] = await appDataSource.query(
-      `SELECT EXISTS(
+  const [result] = await appDataSource.query(
+    `SELECT EXISTS(
           SELECT
           id
         FROM
@@ -40,14 +39,9 @@ const checkRegisterdEmail = async (email) => {
         WHERE
           email=?
       ) as registed`,
-      [email]
-    );
-    return !!parseInt(result.registed);
-  } catch (err) {
-    console.error(err);
-    err.statusCode = 500;
-    throw err;
-  }
+    [email]
+  );
+  return !!parseInt(result.registed);
 };
 
 const checkRegisterdPhoneNumber = async (phoneNumber) => {
@@ -65,7 +59,6 @@ const checkRegisterdPhoneNumber = async (phoneNumber) => {
     );
     return !!parseInt(result.registed);
   } catch (err) {
-    console.error(err);
     err.statusCode = 500;
     throw err;
   }
@@ -86,7 +79,6 @@ const checkRegisteruserId = async (userId) => {
     );
     return !!parseInt(result.registed);
   } catch (err) {
-    console.error(err);
     err.statusCode = 500;
     throw err;
   }
@@ -106,7 +98,6 @@ const getUserPasswordByEmail = async (email) => {
     );
     return result.password;
   } catch (err) {
-    console.error(err);
     err.statusCode = 500;
     throw err;
   }
@@ -126,7 +117,6 @@ const getUserIdByEmail = async (email) => {
     );
     return result.id;
   } catch (err) {
-    console.error(err);
     err.statusCode = 500;
     throw err;
   }

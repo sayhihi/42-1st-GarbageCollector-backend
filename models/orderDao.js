@@ -63,7 +63,7 @@ const createOrderPayment = async (
       return [el.productOptionId, el.quantity, orderId];
     });
 
-    const createOrderItems = await queryRunner.query(
+    await queryRunner.query(
       `INSERT INTO order_items
       (
         product_option_id,
@@ -136,7 +136,7 @@ const prepareOrder = async (productOptionId, quantity) => {
 
     return result;
   } catch (err) {
-    const error = new Error("FAIL TO GET ITEM INFORMATION");
+    const error = new Error("FAIL_TO_GET_ITEM_INFORMATION");
     error.statusCode = 400;
     throw error;
   }
