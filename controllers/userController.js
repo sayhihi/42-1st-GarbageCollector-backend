@@ -1,5 +1,5 @@
-const { catchAsync } = require("../utills/error");
 const userService = require("../services/userService");
+const { catchAsync } = require("../utills/error");
 
 const signup = catchAsync(async (req, res) => {
   const { email, password, name, birth, phoneNumber, address } = req.body;
