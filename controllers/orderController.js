@@ -26,9 +26,9 @@ const createOrderPayment = catchAsync(async (req, res) => {
 
 const prepareOrder = catchAsync(async (req, res) => {
   const userId = req.user;
-  const { productOptions } = req.body;
+  const productOptions = req.body;
 
-  if (!productOptions) {
+  if (!productOptions[0]) {
     return res.status(400).json({ message: "KEY_ERROR" });
   }
 

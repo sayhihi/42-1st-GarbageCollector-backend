@@ -18,9 +18,8 @@ const checkValidToken = async (req, res, next) => {
     req.user = decoded.userId;
     next();
   } catch (err) {
-    console.error(err);
     err.statusCode = 400;
-    throw err;
+    next(err);
   }
 };
 

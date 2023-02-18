@@ -2,7 +2,7 @@ const cartService = require("../services/cartService");
 const { catchAsync } = require("../utills/error");
 
 const createItem = catchAsync(async (req, res) => {
-  const { productOptions } = req.body;
+  const productOptions = req.body;
   const userId = req.user;
 
   if (!userId || !productOptions) {
@@ -57,6 +57,7 @@ const deleteItems = catchAsync(async (req, res) => {
 
   if (!userId || !cartId) {
     const err = new Error("KEY_ERROR");
+    err.statusCode = 400;
     throw err;
   }
 

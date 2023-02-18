@@ -21,7 +21,7 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
     throw err;
   }
 
-  if (itemsInCart && itemsInCart.quantity + quantity <= 0) {
+  if (itemsInCart && itemsInCart.quantity + quantity < 0) {
     const err = new Error(`CANNOT_DECREASE_QUANTITY_BELOW_0`);
     err.statusCode = 400;
     throw err;
