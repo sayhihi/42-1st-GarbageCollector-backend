@@ -53,11 +53,9 @@ https://youtu.be/ujv99pNE0Fw
 
 #### 메인 페이지 (상품 리스트)
 
----
-
 - query parameters과 검색 필터 기능을 이용한 카테고리 및 정렬(낮은 가격순, 높은 가격순, 최신순) 기능 구현
 - SELECT, INNER JOIN 을 이용한 상품 정보 및 이미지 데이터 조회 기능 구현
-
+---
 #### 상품 상세 페이지
 
 - SELECT, LEFT JOIN, INNER JOIN, JASON_ARRAYAGG, JSON_OBJECT, GROUP BY 을 이용해
