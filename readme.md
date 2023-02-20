@@ -62,10 +62,11 @@ https://youtu.be/ujv99pNE0Fw
 
 - SELECT, LEFT JOIN, INNER JOIN, JASON_ARRAYAGG, JSON_OBJECT, GROUP BY 을 이용해
   해당 상품에 대한 상품 정보, 옵션별 데이터 조회 기능 구현
+---
 
 <img src = "https://velog.velcdn.com/images/zeler1004/post/b3b61b21-81a2-4cf6-baf3-cb13a179aa1c/image.png" width = "100" height = "100">
 
-- 상품검색 조회 기능
+#### 상품검색 조회 기능
   웹 페이지 접속하고나면 main 페이지로 웹의 첫 화면이 나타난다.
   이때 많은 상품이 존재하는 상황에서 유저가 타겟팅하고있는 니즈의 제품이 있다면 그 제품에 대한 keyword로 제품을 찾아볼 수 있게끔 하는 기능이 필요했다.
   backend에서 검색조회 기능에 대한 API와 frontend에서의 검색조회 화면 구현에 대해서는 main페이지라는 큰틀의 기능이 있었기 때문에 구현하는데에 있어서 큰 어려움은 없었다. main페이지에 대한 내용을 reference하여 만들 수 있었기 때문이었다.
