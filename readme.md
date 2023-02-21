@@ -69,8 +69,9 @@ https://youtu.be/ujv99pNE0Fw
 
 <img src = "https://velog.velcdn.com/images/zeler1004/post/b3b61b21-81a2-4cf6-baf3-cb13a179aa1c/image.png" width = "300" height = "300">
 
-- 상품검색 조회 기능<br>
-  main 페이지로 웹의 첫 화면에서 유저가 타겟팅하고있는 니즈의 제품이 있다면 그 제품에 대한 keyword로 제품을 찾아볼 수 있도록 기능 구현<br>
+#### 상품검색 조회 기능
+
+- main 페이지로 웹의 첫 화면에서 유저가 타겟팅하고있는 니즈의 제품이 있다면 그 제품에 대한 keyword로 제품을 찾아볼 수 있도록 기능 구현<br>
   keyword의 검색 할당범위는 제품의 이름, description, 가격, 할인가격, 제품번호에 대하여 검색할 수 있도록 범위를 정해놓음
 
 ---
