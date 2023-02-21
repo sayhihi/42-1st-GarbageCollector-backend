@@ -1,5 +1,5 @@
 const searchService = require("../services/searchService");
-const { catchAsync } = require("../utills/error");
+const { catchAsync } = require("../utils/error");
 
 const getSearchByProducts = catchAsync(async (req, res) => {
   const { keyword } = req.query;

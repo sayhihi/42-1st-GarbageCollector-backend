@@ -1,5 +1,5 @@
 const orderService = require("../services/orderService");
-const { catchAsync } = require("../utills/error");
+const { catchAsync } = require("../utils/error");
 
 const createOrderPayment = catchAsync(async (req, res) => {
   const userId = req.user;

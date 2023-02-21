@@ -1,5 +1,5 @@
 const productService = require("../services/productService");
-const { catchAsync } = require("../utills/error");
+const { catchAsync } = require("../utils/error");
 
 const getProducts = catchAsync(async (req, res) => {
   const { categoryId, sort } = req.query;

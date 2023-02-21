@@ -2,7 +2,7 @@ const bycrpt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const userDao = require("../models/userDao");
-const checkValidation = require("../utills/validation-check");
+const checkValidation = require("../utils/validation-check");
 
 const signup = async (email, password, name, birth, phoneNumber, address) => {
   if (await userDao.checkRegisterdEmail(email)) {
@@ -32,7 +32,7 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
     address
   );
 
-  const POINT = 10000;
+  const POINT = 100000;
 
   await userDao.makeUserPoint(POINT, user.insertId);
 
