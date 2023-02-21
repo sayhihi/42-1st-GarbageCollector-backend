@@ -32,7 +32,7 @@ const signup = async (email, password, name, birth, phoneNumber, address) => {
     address
   );
 
-  const POINT = 10000;
+  const POINT = 100000;
 
   await userDao.makeUserPoint(POINT, user.insertId);
 
