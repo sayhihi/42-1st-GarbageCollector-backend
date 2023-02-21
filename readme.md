@@ -37,7 +37,7 @@ https://youtu.be/ujv99pNE0Fw
 
 <br>
 
-## 적용 기https://github.com/wecode-bootcamp-korea/42-1st-GarbageCollector-backend/pull/21/conflict?name=readme.md&ancestor_oid=eeded7bc8ba72c77aa4d8f13f2f6d9cb8b54c5d3&base_oid=310c98484454d8c6cdeb5b6fd0a5f35169e22f12&head_oid=dc6303e8c6fff526d415f79a1c17e36e0c4ef072술 및 구현 기능
+## 적용 기술 및 구현 기능
 
 ### ⌨️적용 기술🖥️
 
