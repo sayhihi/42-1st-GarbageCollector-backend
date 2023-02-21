@@ -1,5 +1,5 @@
 const cartService = require("../services/cartService");
-const { catchAsync } = require("../utills/error");
+const { catchAsync } = require("../utils/error");
 
 const createItem = catchAsync(async (req, res) => {
   const productOptions = req.body;
