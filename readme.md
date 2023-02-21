@@ -38,10 +38,6 @@ https://youtu.be/ujv99pNE0Fw
 
 ---
 
-https://img.shields.io/badge/Node.js#339933?style=for-the-badge&logo=Node.js&logoColor=green)
-
-
-
 > - Front-End : React.js, sass, Javascript, html, css
 > - Back-End : Node.js, Express, JSON Web TOKEN, Bcrypt, My SQL, uuid
 > - Common : RESTful API, Git, Github, Trello, Slack, Notion, Postman
