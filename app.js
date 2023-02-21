@@ -5,7 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const { appDataSource } = require("./models/appDataSource");
-const { globalErrorHandler } = require("./utills/error");
+const { globalErrorHandler } = require("./utils/error");
 const routes = require("./routes");
 
 const app = express();
