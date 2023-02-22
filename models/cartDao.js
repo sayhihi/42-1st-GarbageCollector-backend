@@ -29,7 +29,7 @@ const getItems = async (userId) => {
     );
   } catch (err) {
     err.message = "FAIL_TO_GET_ITEMS_IN_CART";
-    err.statuscode = 500;
+    err.statuscode = 400;
     throw err;
   }
 };
@@ -51,7 +51,7 @@ const createOrUpdateItem = async (userId, productOptionId, quantity) => {
     );
   } catch (err) {
     err.message = "FAIL_TO_ADD_ITEM_IN_CART";
-    err.statuscode = 500;
+    err.statuscode = 400;
     throw err;
   }
 };
@@ -68,7 +68,7 @@ const deleteItems = async (userId, cartId) => {
     if (!deleteItems.affectedRows) throw err;
   } catch (err) {
     err.message = "FAIL_TO_DELETE_ITEM_IN_CART";
-    err.statuscode = 500;
+    err.statuscode = 400;
     throw err;
   }
 };
@@ -93,7 +93,7 @@ const checkItemInCart = async (userId, productOptionId) => {
     return itemInCart;
   } catch (err) {
     err.message = "FAIL_TO_CHECK_ITEMS_IN_CART";
-    err.statuscode = 500;
+    err.statuscode = 400;
     throw err;
   }
 };
@@ -113,7 +113,7 @@ const checkItemInventory = async (productOptionId) => {
     return itemInventory;
   } catch (err) {
     err.message = "FAIL_TO_CHECK_ITEM_INVENTORY";
-    err.statuscode = 500;
+    err.statuscode = 400;
     throw err;
   }
 };
