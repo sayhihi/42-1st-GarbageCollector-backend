@@ -59,7 +59,7 @@ const checkRegisterdPhoneNumber = async (phoneNumber) => {
     );
     return !!parseInt(result.registed);
   } catch (err) {
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   }
 };
@@ -79,7 +79,7 @@ const checkRegisteruserId = async (userId) => {
     );
     return !!parseInt(result.registed);
   } catch (err) {
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   }
 };
@@ -98,7 +98,7 @@ const getUserPasswordByEmail = async (email) => {
     );
     return result.password;
   } catch (err) {
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   }
 };
@@ -117,7 +117,7 @@ const getUserIdByEmail = async (email) => {
     );
     return result.id;
   } catch (err) {
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   }
 };
