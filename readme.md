@@ -1,5 +1,5 @@
 ## 🧑🏻‍💻👩🏻‍💻garbageCollector 프로젝트 Back-end 소개
-
+https://user-images.githubusercontent.com/114500319/220099996-3a450f9d-8f85-48ea-bf8a-f9b4fc72fa46.gif
 ---
 
 ![iscreen_shoter_-_20230215013656803_720](https://user-images.githubusercontent.com/114500319/220086298-de11084d-c857-4db2-95d5-f42e85ca8581.jpg)
