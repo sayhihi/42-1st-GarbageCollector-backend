@@ -88,10 +88,14 @@ Communication
 
 #### 메인 페이지 (상품 리스트)
 
+https://user-images.githubusercontent.com/114500319/220098727-f7bcc524-432e-49f9-b441-87888660fde8.gif
+
 - query parameters과 검색 필터 기능을 이용한 카테고리 및 정렬(낮은 가격순, 높은 가격순, 최신순) 기능 구현.
 - SELECT, INNER JOIN 을 이용한 상품 정보 및 이미지 데이터 조회 기능 구현.
 
 #### 상품 상세 페이지
+
+https://user-images.githubusercontent.com/114500319/220099526-2cfd6f84-b6c9-4152-baa6-3c12754114ba.gif
 
 - SELECT, LEFT JOIN, INNER JOIN, JASON_ARRAYAGG, JSON_OBJECT, GROUP BY 을 이용해
   해당 상품에 대한 상품 정보, 옵션별 데이터 조회 기능 구현.
@@ -103,6 +107,8 @@ Communication
 
 #### 회원가입/로그인
 
+https://user-images.githubusercontent.com/114500319/220098696-6d3d77d6-2d64-4305-a855-f630516f12d3.gif
+
 - 회원가입 기능<br>
   - 사용자가 서비스를 이용하는데에 있어서 필수로 들어가야 하는 회원정보들에 대하여 누락되지 않도록 함.<br>
     대신 사용자에 대한 정보를 입력할때에 피로감을 덜기 위해 ID와 비밀번호를 구별하지 않게하여 ID가 email이 되도록 함.<br>
@@ -112,7 +118,9 @@ Communication
   - 사용자가 회원가입시 암호의 보안을 위하여 bcrypt를 활용하여 비밀번호를 추가적으로 암호화 시킴.
 
 - 로그인 기능<br>
-![image](https://user-images.githubusercontent.com/117356735/221395401-ff1b9d59-4b5c-44d2-918e-9742eb3a0d8a.png)
+
+https://user-images.githubusercontent.com/114500319/220098577-4511046c-c863-4db5-92c9-f6557364d9ff.gif
+
 
   - 사용자가 로그인할때 사용자에 대한 정보가 옳지 않은 경우(ex.기입오류) 서버에서 잘못된 요청에 대한 error값을 반환 시킬 수 있도록 함.<br>
   - 로그인시 Token을 발행하도록 jwt을 사용하였으며 PC에 제3자가 이용할 수 있는 위험을 어느정도 예방할 수 있도록 Token을 발행로그인시<br>
@@ -120,6 +128,8 @@ Communication
   - jwt를 통해서 발급한 토큰이 차후에 장바구니, 주문서, 결제의 기능에 해당 유저가 이용하기 위한 서비스인것을 인지하기 위해서 유효성 검사기능도 포함시킴.
 
 #### 장바구니
+
+https://user-images.githubusercontent.com/114500319/220099996-3a450f9d-8f85-48ea-bf8a-f9b4fc72fa46.gif
 
 - 회원가입 기반 기능으로, 로그인 된 유저의 token 정보를 기반으로 해당 유저의 장바구니 정보를 데이터베이스에서 사용하도록 구현.
 - 장바구니 조회 기능
@@ -135,6 +145,8 @@ Communication
   - query parameter와 sql raw query의 WHERE IN ( ) 구문을 이용해 상품의 갯수와 상관없이 한번에 삭제 할 수 있는 기능 구현.
 
 #### 주문서 작성 기능
+
+https://user-images.githubusercontent.com/114500319/220100608-5ec601cc-1e18-4b38-8f3f-2094ab7f4e82.gif
 
 - 회원가입 기반 기능으로, 로그인 된 유저의 token 정보를 기반으로 해당 유저의 포인트를 조회해 반환하는 기능을 구현.
 - 주문 api로 요청된 상품의 id로 데이터베이스에서 각 상품의 정보를 조회하여 반환하는 기능을 구현.
